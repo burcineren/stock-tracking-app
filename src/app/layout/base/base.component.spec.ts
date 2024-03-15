@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { CustomLayoutComponent } from './custom-layout.component';
+import { CustomLayoutComponent } from './base.component';
 
 describe('CustomLayoutComponent', () => {
   let component: CustomLayoutComponent;
