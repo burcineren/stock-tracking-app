@@ -121,13 +121,13 @@ export class AppComponent {
     this.navigationService.items = [
       {
         type: 'subheading',
-        label: 'Dashboards',
+        label: 'Hisse Senedi Analizi',
         children: [
           {
             type: 'link',
-            label: 'Analytics',
+            label: 'Hisse Senedi Analizi',
             route: '/',
-            icon: 'mat:insights',
+            icon: '',
             routerLinkActiveOptions: { exact: true }
           }
         ]
