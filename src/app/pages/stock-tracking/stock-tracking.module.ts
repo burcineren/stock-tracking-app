@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 import { StockTrackingComponent } from './stock-tracking.component';
 import { ChartModule } from 'src/@vex/components/chart/chart.module';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,7 +17,17 @@ import { PageLayoutModule } from 'src/@vex/components/page-layout/page-layout.mo
 import { DashboardAnalyticsRoutingModule } from './stock-tracking-routing.module';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatNativeDateModule } from '@angular/material/core';
+import { FusionChartsModule } from 'angular-fusioncharts';
 
+import * as FusionCharts from "fusioncharts";
+import * as charts from "fusioncharts/fusioncharts.charts";
+import * as FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
+import { MatTableModule } from '@angular/material/table';
+FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme);
 
 
 @NgModule({
@@ -41,8 +51,14 @@ import { MatSelectModule } from '@angular/material/select';
     MatButtonModule,
     PageLayoutModule,
     MatInputModule,
-    MatSelectModule
-
-  ]
+    MatSelectModule,
+    MatDatepickerModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatNativeDateModule,
+    FusionChartsModule,
+    MatTableModule
+  ],
+  
 })
 export class StockTrackingModule { }
