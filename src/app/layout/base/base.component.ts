@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { LayoutService } from '../../../@vex/services/layout.service';
 import { filter, map, startWith } from 'rxjs/operators';
 import { NavigationEnd, Router } from '@angular/router';
@@ -16,7 +16,6 @@ import { SidebarComponent } from '../../../@vex/components/sidebar/sidebar.compo
   styleUrls: ['./base.component.scss']
 })
 export class CustomLayoutComponent implements OnInit {
-
   sidenavCollapsed$ = this.layoutService.sidenavCollapsed$;
   isFooterVisible$ = this.configService.config$.pipe(map(config => config.footer.visible));
   isDesktop$ = this.layoutService.isDesktop$;
@@ -30,9 +29,9 @@ export class CustomLayoutComponent implements OnInit {
   @ViewChild('configpanel', { static: true }) configpanel: SidebarComponent;
 
   constructor(private layoutService: LayoutService,
-              private configService: ConfigService,
-              private breakpointObserver: BreakpointObserver,
-              private router: Router) { }
+    private configService: ConfigService,
+    private breakpointObserver: BreakpointObserver,
+    private router: Router) { }
 
   ngOnInit() {
     this.layoutService.configpanelOpen$.pipe(

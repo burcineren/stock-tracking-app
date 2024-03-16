@@ -10,6 +10,8 @@ import { SidebarModule } from '../../@vex/components/sidebar/sidebar.module';
 import { QuickpanelModule } from '../../@vex/layout/quickpanel/quickpanel.module';
 import { FooterComponent } from './footer/footer.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
+import { BreadcrumbsModule } from 'src/@vex/components/breadcrumbs/breadcrumbs.module';
+import { SecondaryToolbarModule } from 'src/@vex/components/secondary-toolbar/secondary-toolbar.module';
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
     FooterModule,
     ConfigPanelModule,
     SidebarModule,
-    QuickpanelModule
+    BreadcrumbsModule,
+    QuickpanelModule,
+    SecondaryToolbarModule
   ]
 })
 export class CustomLayoutModule {
