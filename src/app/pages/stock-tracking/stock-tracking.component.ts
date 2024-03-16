@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { StockData } from 'src/app/core/services/stock.data.model';
+import { StockService } from 'src/app/core/services/stock.service';
 
 
 const data = {
@@ -11,7 +13,7 @@ const data = {
     numbersuffix: "%",
     drawcrossline: "1",
     plottooltext: "<b>$dataValue</b> of Adults were on $seriesName",
-    theme: "candy"
+    theme: "gammel"
   },
   categories: [
     {
@@ -128,7 +130,9 @@ const ELEMENT_DATA: PeriodicElement[] = [
   templateUrl: './stock-tracking.component.html',
   styleUrls: ['./stock-tracking.component.scss'],
 })
-export class StockTrackingComponent  {
+export class StockTrackingComponent implements OnInit {
+  stockData: StockData;
+
   stocks = ['IBM', 'AAPL', 'AMZN', 'GOOG']; 
   width = 600;
   height = 400;
@@ -142,5 +146,15 @@ export class StockTrackingComponent  {
     end: new FormControl<Date | null>(null),
     
   });
+  constructor(private stockService: StockService) { }
 
+  ngOnInit(): void {
+    this.getStockData('IBM'); 
+  }
+  getStockData(symbol: string): void {
+    this.stockService.getDailyTimeSeries(symbol).subscribe(data => {
+      this.stockData = data;
+      console.log(this.stockData);
+    });
+  }
 }
