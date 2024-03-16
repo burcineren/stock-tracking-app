@@ -1,0 +1,12 @@
+<div
+  class="container p-gutter grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4"
+>
+  <mat-form-field>
+    <mat-label>Hisse Seçiniz</mat-label>
+    <mat-select placeholder="Hisse Seçiniz" multiple>
+      <mat-option *ngFor="let stock of stocks" [value]="stock">
+        {{ stock }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
