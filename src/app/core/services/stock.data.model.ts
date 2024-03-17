@@ -15,4 +15,5 @@ export interface StockData {
             volume: string;
         };
     };
+    dates: string[]; // Yeni özellik: tarihlerin listesi
 }

@@ -57,7 +57,8 @@ FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme);
     MatFormFieldModule,
     MatNativeDateModule,
     FusionChartsModule,
-    MatTableModule
+    MatTableModule,
+    FormsModule
   ],
   
 })

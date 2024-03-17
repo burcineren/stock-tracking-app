@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {FormGroup, FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { StockData } from 'src/app/core/services/stock.data.model';
+import { FormGroup, FormControl } from '@angular/forms';
 import { StockService } from 'src/app/core/services/stock.service';
-
+import { MatTableDataSource } from '@angular/material/table';
+import { Observable } from 'rxjs';
 
 const data = {
   chart: {
@@ -104,26 +104,12 @@ const data = {
     }
   ]
 };
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
+interface StockElement {
+  date: string;
+  openPrice: number;
   symbol: string;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
 
 @Component({
   selector: 'vex-stock-tracking',
@@ -131,30 +117,44 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./stock-tracking.component.scss'],
 })
 export class StockTrackingComponent implements OnInit {
-  stockData: StockData;
-
-  stocks = ['IBM', 'AAPL', 'AMZN', 'GOOG']; 
+  dataSource = new MatTableDataSource<StockElement>();
+  displayedColumns: string[] = ['symbol', 'date', 'openPrice'];
+  stocks = ['IBM', 'AAPL', 'AMZN', 'GOOG','MSFT']; 
   width = 600;
   height = 400;
   type = "msline";
   dataFormat = "json";
-  dataSource = data;
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource2 = ELEMENT_DATA;
+  dataSource2 = data;
+  headerDate: string | undefined;
+
+  
   range = new FormGroup({
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),
-    
   });
-  constructor(private stockService: StockService) { }
+
+  constructor(private stockService: StockService) {}
 
   ngOnInit(): void {
-    this.getStockData('IBM'); 
-  }
-  getStockData(symbol: string): void {
-    this.stockService.getDailyTimeSeries(symbol).subscribe(data => {
-      this.stockData = data;
-      console.log(this.stockData);
+    this.stocks.forEach(symbol => {
+      this.getStockData(symbol);
     });
   }
+
+  getStockData(symbol: string): void {
+    this.stockService.getDailyTimeSeries(symbol).subscribe(data => {
+      const stockElements: StockElement[] = [];
+      const metaData = data['Meta Data'];
+      const timeSeries = data['Time Series (Daily)'];
+      const symbol = metaData['2. Symbol'];
+
+      for (const [date, values] of Object.entries(timeSeries)) {
+        const openPrice = parseFloat(values['1. open']);
+        stockElements.push({ date, openPrice, symbol });
+      }
+
+      this.dataSource.data = stockElements;
+    });
+  }
+
 }
