@@ -19,21 +19,21 @@ Stock Tracker is a web application developed using Angular that allows users to 
  - **RxJS:** A library for reactive programming.
 
 ## Installation
-    1. Navigate to the project directory: `cd stock-tracker`
-    2. Install dependencies: `npm install`
-    3. Start the application: `npm start`
+  - Navigate to the project directory: `cd stock-tracker`
+  - Install dependencies: `npm install`
+  - Start the application: `npm start`
 
 ## How to Use
-    1. Open the application.
-    2. Enter the stock symbol in the search box.
-    3. View the chart and related data.
-    4. Select the desired time interval and chart type.
-    5. Adjust the chart size as needed.
+  - Open the application.
+  - Enter the stock symbol in the search box.
+  - View the chart and related data.
+  - Select the desired time interval and chart type.
+  - 5. Adjust the chart size as needed.
 
 ## Contributing
-    1. Fork this project.
-    2. Add a new feature or fix a bug.
-    3. Commit your changes: `git commit -m 'Added a new feature'`
-    4. Push your changes: `git push origin feature/branch-name`
-    5. Create a pull request.
+   -  Fork this project.
+   -  Add a new feature or fix a bug.
+   -  Commit your changes: `git commit -m 'Added a new feature'`
+   -  Push your changes: `git push origin feature/branch-name`
+   -  Create a pull request.
 
