@@ -28,7 +28,7 @@ Stock Tracker is a web application developed using Angular that allows users to 
   - Enter the stock symbol in the search box.
   - View the chart and related data.
   - Select the desired time interval and chart type.
-  - 5. Adjust the chart size as needed.
+  - Adjust the chart size as needed.
 
 ## Contributing
    -  Fork this project.
