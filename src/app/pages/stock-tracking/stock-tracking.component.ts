@@ -3,6 +3,10 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { StockService } from 'src/app/core/services/stock.service'; // Assuming StockService handles API calls
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
+import { StockState } from 'src/app/store/stock/stock.state';
+import { Select, Store } from '@ngxs/store';
+import { LoadStockData, SetEndDate, SetFilteredStocks, SetStartDate } from 'src/app/store/stock/stoct.actions';
+import { StockElement } from 'src/app/store/stock/stoct.model';
 const data = {
   chart: {
     caption: "Reach of Social Media Platforms amoung Adults",
@@ -103,11 +107,16 @@ const data = {
     }
   ]
 };
-interface StockElement {
-  date: string;
-  openPrice: number;
-  symbol: string;
-}
+// interface StockElement {
+//   symbol: string;
+//   name: string;
+//   openPrice: number;
+//   high: number;
+//   low: number;
+//   close: number;
+//   volume: number;
+//   date: string;
+// }
 
 @Component({
   selector: 'vex-stock-tracking',
@@ -115,10 +124,13 @@ interface StockElement {
   styleUrls: ['./stock-tracking.component.scss'],
 })
 export class StockTrackingComponent implements OnInit {
+  @Select(StockState.getStocks) stocks$: Observable<StockElement[]>;
+  @Select(StockState.getFilteredStocks) filteredStocks$: Observable<StockElement[]>;
+  filteredDataSource = new MatTableDataSource<StockElement>();
   dataSource = new MatTableDataSource<StockElement>();
   displayedColumns: string[] = ['symbol', 'date', 'openPrice'];
-  stocks = ['IBM', 'AAPL', 'AMZN', 'GOOG', 'MSFT'];
   selectedStocks: string[] = []; 
+  
   height = 400;
   type = "msline";
   dataFormat = "json";
@@ -127,44 +139,32 @@ export class StockTrackingComponent implements OnInit {
     start: new FormControl<string | null>(null),
     end: new FormControl<string | null>(null),
   });
-  constructor(private stockService: StockService) { }
-  ngOnInit(): void {
+  setStartDate(date: string) {
+    this.store.dispatch(new SetStartDate(date));
   }
-  filteredDataSource = new MatTableDataSource<StockElement>();
+  setEndDate(date: string) {
+    this.store.dispatch(new SetEndDate(date));
+  }
+  constructor(private store: Store) { }
+
+  ngOnInit(): void {
+    this.store.dispatch(new LoadStockData());
+  }
 
   filterData() {
     const startDate = this.formatDate(this.range.value.start);
     const endDate = this.formatDate(this.range.value.end);
     const selectedStocks = this.selectedStocks; 
-    if (startDate && endDate && selectedStocks.length > 0) {
-      this.stockService.getDailyTimeSeries(selectedStocks, startDate, endDate).subscribe((data) => {
-        const stockElements: StockElement[] = [];
-  
-        const symbols: string[] = Object.keys(data);
-  
-        for (const symbol of symbols) {
-          if (data[symbol] && data[symbol]['Time Series (Daily)'] && data[symbol]['Meta Data']) {
-            const metaData = data[symbol]['Meta Data'];
-            const timeSeries = data[symbol]['Time Series (Daily)'];
-            const symbolName = metaData['2. Symbol'];
-  
-            for (const [date, values] of Object.entries(timeSeries)) {
-              const openPrice = parseFloat(values['1. open']);
-              stockElements.push({ date, openPrice, symbol: symbolName });
-            }
-          } else {
-            console.error(`Time Series (Daily) data for stock ${symbol} is missing or undefined`);
-          }
-        }
-        stockElements.sort((a, b) => a.symbol.localeCompare(b.symbol));
-        this.filteredDataSource.data = stockElements;
-        this.applyFilter();
+
+    console.log(selectedStocks)
+    
+      this.filteredStocks$.subscribe(filteredStocks => {
+        this.store.dispatch(new LoadStockData());
       });
-  
-    } else {
-      console.log('Please select a date range and at least one stock');
-    }
+    
   }
+  
+
   formatDate(date: string | null): string | null {
     if (!date) {
       return null;
@@ -172,15 +172,14 @@ export class StockTrackingComponent implements OnInit {
     const dateObj = new Date(date);
     const day = String(dateObj.getDate()).padStart(2, '0'); 
     const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-    console.log("first:::", day);
     return `${day}-${month}-${dateObj.getFullYear()}`;
   }
+
   applyFilter() {
     this.filteredDataSource.filterPredicate = (data: StockElement) => {
       const startDateTimestamp = new Date(this.formatDate(this.range.value.start)!).getTime();
       const endDateTimestamp = new Date(this.formatDate(this.range.value.end)!).getTime();
       const dataDateTimestamp = new Date(data.date).getTime();
-      console.log("start:", startDateTimestamp, "end:", endDateTimestamp, "data:", dataDateTimestamp);
       return dataDateTimestamp >= startDateTimestamp && dataDateTimestamp <= endDateTimestamp;
     };
 
