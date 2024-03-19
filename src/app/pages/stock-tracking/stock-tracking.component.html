@@ -59,6 +59,7 @@
 </div>
 <div class="container mt-4">
   <table mat-table [dataSource]="filteredDataSource" class="mat-elevation-z8">
+    <caption>Hisse Senedi Değerleri ve Tarihleri</caption>
     <ng-container matColumnDef="date">
       <th mat-header-cell *matHeaderCellDef>Tarih</th>
       <td mat-cell *matCellDef="let element">{{ element.date }}</td>
@@ -78,5 +79,6 @@
     <tr mat-row *matRowDef="let element; columns: displayedColumns"></tr>
   </table>
 </div>
+
 
 
