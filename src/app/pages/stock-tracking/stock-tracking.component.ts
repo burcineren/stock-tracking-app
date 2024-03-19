@@ -119,10 +119,11 @@ export class StockTrackingComponent implements OnInit {
   displayedColumns: string[] = ['symbol', 'date', 'openPrice'];
   stocks = ['IBM', 'AAPL', 'AMZN', 'GOOG', 'MSFT'];
   selectedStocks: string[] = []; 
-  height = 400;
-  type = "msline";
-  dataFormat = "json";
-  dataSource2 = data;
+  width = '1200';
+  height = '400';
+  type = 'msline';
+  dataFormat = 'json';
+  chartDataSource: any = {};
   range = new FormGroup({
     start: new FormControl<string | null>(null),
     end: new FormControl<string | null>(null),
@@ -131,15 +132,14 @@ export class StockTrackingComponent implements OnInit {
   ngOnInit(): void {
   }
   filteredDataSource = new MatTableDataSource<StockElement>();
-
   filterData() {
     const startDate = this.formatDate(this.range.value.start);
     const endDate = this.formatDate(this.range.value.end);
     const selectedStocks = this.selectedStocks; 
+  
     if (startDate && endDate && selectedStocks.length > 0) {
       this.stockService.getDailyTimeSeries(selectedStocks, startDate, endDate).subscribe((data) => {
         const stockElements: StockElement[] = [];
-  
         const symbols: string[] = Object.keys(data);
   
         for (const symbol of symbols) {
@@ -156,15 +156,74 @@ export class StockTrackingComponent implements OnInit {
             console.error(`Time Series (Daily) data for stock ${symbol} is missing or undefined`);
           }
         }
-        stockElements.sort((a, b) => a.symbol.localeCompare(b.symbol));
-        this.filteredDataSource.data = stockElements;
-        this.applyFilter();
-      });
   
+        this.filteredDataSource.data = stockElements; 
+  
+        this.filteredDataSource.filter = '';
+        this.filteredDataSource.filter = this.filteredDataSource.filter.trim().toLowerCase();
+  
+        this.updateChart(selectedStocks, data);
+  
+        console.log(this.filteredDataSource.data); 
+      });
     } else {
       console.log('Please select a date range and at least one stock');
     }
   }
+  
+  
+  
+  
+  
+  updateChart(selectedStocks: string[], data: any) {
+    if (Object.keys(data).length === 0) {
+      this.chartDataSource = {
+        chart: {
+          caption: "No Data Available",
+          subcaption: "",
+          theme: "fusion"
+        },
+        categories: [],
+        dataset: []
+      };
+    } else {
+      const categories = [];
+      const dataset = [];
+  
+      const symbols: string[] = Object.keys(data);
+  
+      const symbolData = data[symbols[0]]['Time Series (Daily)'];
+      const dates = Object.keys(symbolData);
+      const categoryLabels = dates.map(date => ({ label: date }));
+      categories.push({ category: categoryLabels });
+  
+      for (const symbol of symbols) {
+        const symbolData = data[symbol]['Time Series (Daily)'];
+        const seriesData = dates.map(date => ({ value: symbolData[date]['4. close'] }));
+        dataset.push({
+          seriesname: symbol,
+          data: seriesData
+        });
+      }
+  
+      this.chartDataSource = {
+        chart: {
+          caption: "Daily Stock Prices",
+          subcaption: "2018-2023",
+          yaxisname: "Price (USD)",
+          theme: "fusion"
+        },
+        categories: categories,
+        dataset: dataset
+      };
+    }
+  
+    console.log("chartDataSource", this.chartDataSource);
+  }
+  
+  
+
+
   formatDate(date: string | null): string | null {
     if (!date) {
       return null;
@@ -172,16 +231,14 @@ export class StockTrackingComponent implements OnInit {
     const dateObj = new Date(date);
     const day = String(dateObj.getDate()).padStart(2, '0'); 
     const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-    console.log("first:::", day);
     return `${day}-${month}-${dateObj.getFullYear()}`;
   }
   applyFilter() {
     this.filteredDataSource.filterPredicate = (data: StockElement) => {
-      const startDateTimestamp = new Date(this.formatDate(this.range.value.start)!).getTime();
-      const endDateTimestamp = new Date(this.formatDate(this.range.value.end)!).getTime();
-      const dataDateTimestamp = new Date(data.date).getTime();
-      console.log("start:", startDateTimestamp, "end:", endDateTimestamp, "data:", dataDateTimestamp);
-      return dataDateTimestamp >= startDateTimestamp && dataDateTimestamp <= endDateTimestamp;
+      const startDateTime = new Date(this.formatDate(this.range.value.start)!).getTime();
+      const endDateTime = new Date(this.formatDate(this.range.value.end)!).getTime();
+      const dataDateTimes = new Date(data.date).getTime();
+      return dataDateTimes >= startDateTime && dataDateTimes <= endDateTime;
     };
 
     this.filteredDataSource.filter = '';
