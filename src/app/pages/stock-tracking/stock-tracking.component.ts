@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { StockService } from 'src/app/core/services/stock.service'; // Assuming StockService handles API calls
 import { MatTableDataSource } from '@angular/material/table';
+
 import { Observable } from 'rxjs';
+import { FilterData, UpdateChart, UpdateDateRange, UpdateFilteredStockData, UpdateStockData } from 'src/app/store/stock/stock.actions';
+import { Store } from '@ngxs/store';
+import { StockState } from 'src/app/store/stock/stock.state';
 interface StockElement {
   date: string;
   openPrice: number;
@@ -23,14 +27,45 @@ export class StockTrackingComponent implements OnInit {
   height = '400';
   type = 'msline';
   dataFormat = 'json';
-  chartDataSource: any = {};
+  chartDataSource: any = {
+    chart: {
+      caption: "Hisse Senedi Değerleri ve Tarihleri",
+      showhovereffect: "1",
+      numbersuffix: "%",
+      drawcrossline: "1",
+      theme: "fusion",
+      type: "msline"
+    },
+    categories: [
+      {
+        category: [
+          {
+            label: ""
+          }
+        ]
+      }
+    ],
+    dataset: [
+      {
+        seriesname: "",
+        data: [
+          {
+            value: ""
+          }
+        ]
+      }
+    ]
+  };
   range = new FormGroup({
     start: new FormControl<string | null>(null),
     end: new FormControl<string | null>(null),
   });
-  constructor(private stockService: StockService) { }
+  constructor(private stockService: StockService, private store: Store, private stockState: StockState) { }
+
   ngOnInit(): void {
+    // this.store.dispatch(new FilterData());
   }
+
   filteredDataSource = new MatTableDataSource<StockElement>();
   filterData() {
     const startDate = this.formatDate(this.range.value.start);
@@ -64,6 +99,7 @@ export class StockTrackingComponent implements OnInit {
         this.updateChart(selectedStocks, data);
 
         console.log(this.filteredDataSource.data);
+        this.store.dispatch(new UpdateFilteredStockData(stockElements));
       });
     } else {
       console.log('Please select a date range and at least one stock');
@@ -110,8 +146,9 @@ export class StockTrackingComponent implements OnInit {
         categories: categories,
         dataset: dataset
       };
+
+      this.store.dispatch(new UpdateChart(this.chartDataSource));
     }
-    console.log("chartDataSource", this.chartDataSource);
   }
   formatDate(date: string | null): string | null {
     if (!date) {
