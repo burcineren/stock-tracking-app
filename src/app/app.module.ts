@@ -7,6 +7,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VexModule } from '../@vex/vex.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CustomLayoutModule } from './layout/custom-layout.module';
+import { StockState } from './store/stock/stock.state';
+import { NgxsModule } from '@ngxs/store';
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,7 +17,7 @@ import { CustomLayoutModule } from './layout/custom-layout.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-
+    NgxsModule.forRoot([StockState]),
     // Vex
     VexModule,
     CustomLayoutModule
