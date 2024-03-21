@@ -99,6 +99,7 @@ export class StockTrackingComponent implements OnInit {
         this.updateChart(selectedStocks, data);
 
         console.log(this.filteredDataSource.data);
+
         this.store.dispatch(new UpdateFilteredStockData(stockElements));
       });
     } else {
@@ -158,15 +159,5 @@ export class StockTrackingComponent implements OnInit {
     const day = String(dateObj.getDate()).padStart(2, '0');
     const month = String(dateObj.getMonth() + 1).padStart(2, '0');
     return `${day}-${month}-${dateObj.getFullYear()}`;
-  }
-  applyFilter() {
-    this.filteredDataSource.filterPredicate = (data: StockElement) => {
-      const startDateTime = new Date(this.formatDate(this.range.value.start)!).getTime();
-      const endDateTime = new Date(this.formatDate(this.range.value.end)!).getTime();
-      const dataDateTimes = new Date(data.date).getTime();
-      return dataDateTimes >= startDateTime && dataDateTimes <= endDateTime;
-    };
-
-    this.filteredDataSource.filter = '';
   }
 }

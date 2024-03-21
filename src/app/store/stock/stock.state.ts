@@ -28,12 +28,12 @@ export interface StockStateModel {
     dateRange: { start: null, end: null },
     filteredStockData: [],
     chartData: null,
-    selectedStocks: [] // selectedStocks özelliğini ekliyoruz
+    selectedStocks: []
   }
 })
 export class StockState {
 
-  constructor(private stockService: StockService) {}
+  constructor(private stockService: StockService) { }
 
   @Action(UpdateStockData)
   updateStockData(ctx: StateContext<StockStateModel>, action: UpdateStockData) {
@@ -43,31 +43,19 @@ export class StockState {
       stocks: action.stockData
     });
   }
-
-  @Action(UpdateDateRange)
-  updateDateRange(ctx: StateContext<StockStateModel>, action: UpdateDateRange) {
-    const state = ctx.getState();
-    ctx.setState({
-      ...state,
-      dateRange: action.range
-    });
-  }
-
-  @Action(UpdateFilteredStockData)
-  updateFilteredStockData(ctx: StateContext<StockStateModel>, action: UpdateFilteredStockData) {
-    const state = ctx.getState();
-    ctx.setState({
-      ...state,
-      filteredStockData: action.data
-    });
-  }
-
   @Action(UpdateChart)
   updateChart(ctx: StateContext<StockStateModel>, action: UpdateChart) {
     const state = ctx.getState();
     ctx.setState({
       ...state,
       chartData: action.chartData
+    });
+  }
+  @Action(UpdateFilteredStockData)
+  updateFilteredStockData(ctx: StateContext<StockStateModel>, action: UpdateFilteredStockData) {
+    const state = ctx.getState();
+    ctx.patchState({
+      filteredStockData: action.payload
     });
   }
 }

@@ -19,9 +19,8 @@ export class UpdateDateRange {
 
 export class UpdateFilteredStockData {
   static readonly type = '[Stock] Update Filtered Stock Data';
-  constructor(public data: StockElement[]) {}
+  constructor(public payload: StockElement[]) {}
 }
-
 export class UpdateChart {
   static readonly type = '[Stock] Update Chart';
   constructor(public chartData: any) {}
