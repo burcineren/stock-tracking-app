@@ -18,7 +18,6 @@ import { NgxsModule } from '@ngxs/store';
     BrowserAnimationsModule,
     HttpClientModule,
     NgxsModule.forRoot([StockState]),
-    // Vex
     VexModule,
     CustomLayoutModule
   ],
