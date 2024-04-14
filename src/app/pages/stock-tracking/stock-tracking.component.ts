@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { StockService } from 'src/app/core/services/stock.service';
-import { Store } from '@ngxs/store';
-import { UpdateFilteredStockData } from 'src/app/store/stock/stock.actions';
+import { Select, Store } from '@ngxs/store';
+// import { UpdateFilteredStockData } from 'src/app/store/stock/stock.actions';
 import { StockChartComponent } from './stock-chart/stock-chart.component';
+import { AddAnimal } from 'src/app/store/zoo/zoo.state';
+import { Observable } from 'rxjs';
 
 interface StockElement {
   date: string;
@@ -17,7 +19,11 @@ interface StockElement {
   styleUrls: ['./stock-tracking.component.scss'],
 })
 export class StockTrackingComponent implements OnInit {
+  @Select(state => state.zoo.animals) animals$: Observable<string[]>;
+
   @ViewChild(StockChartComponent) stockChartComponent: StockChartComponent;
+
+  newAnimal: string = '';
   selectedStocks: string[] = [];
   stocks = ['IBM', 'AAPL', 'AMZN', 'GOOG', 'MSFT'];
   width = '100%';
@@ -79,7 +85,7 @@ export class StockTrackingComponent implements OnInit {
   
         this.stockChartComponent.updateChart(selectedStocks, data);
   
-        this.store.dispatch(new UpdateFilteredStockData(stockElements));
+        // this.store.dispatch(new UpdateFilteredStockData(stockElements));
       });
     } else {
       console.log('Please select a date range and at least one stock');
@@ -94,4 +100,12 @@ export class StockTrackingComponent implements OnInit {
     const month = String(dateObj.getMonth() + 1).padStart(2, '0');
     return `${day}-${month}-${dateObj.getFullYear()}`;
   }
+  addNewAnimal() {
+    if (this.newAnimal.trim() !== '') {
+      this.store.dispatch(new AddAnimal(this.newAnimal.trim()));
+      this.newAnimal = '';
+      console.log("first::", this.store.dispatch(new AddAnimal(this.newAnimal.trim())));
+    }
+  }
+  
 }

@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VexModule } from '../@vex/vex.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CustomLayoutModule } from './layout/custom-layout.module';
-import { StockState } from './store/stock/stock.state';
+import { StockState } from './store/stock/filter.state';
 import { NgxsModule } from '@ngxs/store';
 
 @NgModule({

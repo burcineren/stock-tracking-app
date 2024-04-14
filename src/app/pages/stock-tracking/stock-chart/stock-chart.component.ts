@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { UpdateChart } from 'src/app/store/stock/stock.actions';
+// import { UpdateChart } from 'src/app/store/stock/stock.actions';
 import { Store } from '@ngxs/store';
 import { FusionChartsModule } from "angular-fusioncharts";
 
@@ -68,7 +68,7 @@ export class StockChartComponent {
         dataset: dataset
       };
 
-      this.store.dispatch(new UpdateChart(this.chartDataSource));
+      // this.store.dispatch(new UpdateChart(this.chartDataSource));
     }
   }
 }
