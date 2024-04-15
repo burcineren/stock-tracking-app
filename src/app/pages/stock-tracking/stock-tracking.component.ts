@@ -4,8 +4,9 @@ import { StockService } from 'src/app/core/services/stock.service';
 import { Select, Store } from '@ngxs/store';
 // import { UpdateFilteredStockData } from 'src/app/store/stock/stock.actions';
 import { StockChartComponent } from './stock-chart/stock-chart.component';
-import { AddAnimal } from 'src/app/store/zoo/zoo.state';
+// import { AddAnimal } from 'src/app/store/zoo/zoo.state';
 import { Observable } from 'rxjs';
+import { Filters } from 'src/app/store/stock/filter.actions';
 
 interface StockElement {
   date: string;
@@ -24,6 +25,7 @@ export class StockTrackingComponent implements OnInit {
   @ViewChild(StockChartComponent) stockChartComponent: StockChartComponent;
 
   newAnimal: string = '';
+  filters:string[] = [];
   selectedStocks: string[] = [];
   stocks = ['IBM', 'AAPL', 'AMZN', 'GOOG', 'MSFT'];
   width = '100%';
@@ -53,6 +55,10 @@ export class StockTrackingComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  filter(filters: string[]){
+    this.store.dispatch(new Filters(filters))
+    console.log(this.store.dispatch(new Filters(filters)))
+  }
 
   filterData() {
     const startDate = this.formatDate(this.range.start);
@@ -60,6 +66,7 @@ export class StockTrackingComponent implements OnInit {
     const selectedStocks = this.selectedStocks;
   
     if (startDate && endDate && selectedStocks.length > 0) {
+      
       this.stockService.getDailyTimeSeries(selectedStocks, startDate, endDate).subscribe((data) => {
         const stockElements: StockElement[] = [];
         const symbols: string[] = Object.keys(data);
@@ -71,7 +78,7 @@ export class StockTrackingComponent implements OnInit {
             const symbolName = metaData['2. Symbol'];
   
             for (const [date, values] of Object.entries(timeSeries)) {
-              const openPrice = parseFloat(values['1. open']);
+              const openPrice = parseFloat(values['4. close']);
               stockElements.push({ date, openPrice, symbol: symbolName });
             }
           } else {
@@ -100,12 +107,12 @@ export class StockTrackingComponent implements OnInit {
     const month = String(dateObj.getMonth() + 1).padStart(2, '0');
     return `${day}-${month}-${dateObj.getFullYear()}`;
   }
-  addNewAnimal() {
-    if (this.newAnimal.trim() !== '') {
-      this.store.dispatch(new AddAnimal(this.newAnimal.trim()));
-      this.newAnimal = '';
-      console.log("first::", this.store.dispatch(new AddAnimal(this.newAnimal.trim())));
-    }
-  }
+  // addNewAnimal() {
+  //   if (this.newAnimal.trim() !== '') {
+  //     this.store.dispatch(new AddAnimal(this.newAnimal.trim()));
+  //     this.newAnimal = '';
+  //     console.log("first::", this.store.dispatch(new AddAnimal(this.newAnimal.trim())));
+  //   }
+  // }
   
 }
