@@ -44,7 +44,7 @@ export class StockChartComponent {
     } else {
       const symbols: string[] = Object.keys(data);
       const symbolData = data[symbols[0]]['Time Series (Daily)'];
-      const dates = Object.keys(symbolData);
+      const dates = Object.keys(symbolData || {});
       const categoryLabels = dates.map(date => ({ label: date }));
       categories.push({ category: categoryLabels });
       for (const symbol of symbols) {

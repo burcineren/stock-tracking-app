@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { StockService } from 'src/app/core/services/stock.service';
 import { Select, Store } from '@ngxs/store';
@@ -7,13 +7,12 @@ import { StockChartComponent } from './stock-chart/stock-chart.component';
 // import { AddAnimal } from 'src/app/store/zoo/zoo.state';
 import { Observable } from 'rxjs';
 import { FetchStockData, Filters } from 'src/app/store/stock/filter.actions';
-
+import { StockData } from 'src/app/store/stock/filter.state';
 interface StockElement {
   date: string;
   openPrice: number;
   symbol: string;
 }
-
 @Component({
   selector: 'vex-stock-tracking',
   templateUrl: './stock-tracking.component.html',
@@ -21,6 +20,8 @@ interface StockElement {
 })
 export class StockTrackingComponent implements OnInit {
   @Select(state => state.zoo.animals) animals$: Observable<string[]>;
+
+  // @Input() filteredDataSource: MatTableDataSource<StockData>;
 
   @ViewChild(StockChartComponent) stockChartComponent: StockChartComponent;
 

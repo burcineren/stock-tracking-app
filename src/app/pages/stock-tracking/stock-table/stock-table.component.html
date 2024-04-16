@@ -1,46 +1,18 @@
-<div
-  class="card"
-  style="
-    overflow-x: auto;
-    overflow-y: auto;
-    max-height: 300px;
-    max-width: 1180px;
-  "
->
-  <h1 class="text-center text-lg p-4">{{ tableTitle }}</h1>
-  <table
-    data-testid="dataTable"
-    class="table-fixed border-collapse border border-slate-400 w-full text-sm text-left text-gray-500"
-  >
+<div class="card" style="overflow-x: auto; overflow-y: auto; max-height: 300px; max-width: 1180px;">
+  <h1 class="text-center text-lg p-4">Stock Data Table</h1>
+  <table class="table-fixed border-collapse border border-slate-400 w-full text-sm text-left text-gray-500">
     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
       <tr>
-        <th scope="col" class="border border-slate-300 px-3 py-2 w-20"></th>
-        <th
-          *ngFor="let item of filteredDataSource.data"
-          scope="col"
-          class="border border-slate-300 px-3 py-2 w-32"
-        >
-          {{ item.date }}
-        </th>
+        <th scope="col" class="border border-slate-300 px-3 py-2 w-20">Symbol</th>
+        <th scope="col" class="border border-slate-300 px-3 py-2 w-32">Date</th>
+        <th scope="col" class="border border-slate-300 px-3 py-2 w-32">Open Price</th>
       </tr>
     </thead>
     <tbody>
-      <tr
-        *ngFor="let item of filteredDataSource.data"
-        class="bg-white border border-slate-300"
-      >
-        <th
-          scope="row"
-          class="border border-slate-300 px-3 py-2 font-medium text-gray-900 whitespace-nowrap"
-        >
-          {{ item.symbol }}
-        </th>
-        <td
-          *ngFor="let item of filteredDataSource.data"
-          class="border border-slate-300 px-3 py-2"
-        >
-          {{ item.openPrice }}
-        </td>
+      <tr *ngFor="let item of filteredDataSource?.data" class="bg-white border border-slate-300">
+        <td scope="row" class="border border-slate-300 px-3 py-2 font-medium text-gray-900 whitespace-nowrap">{{ item.symbol }}</td>
+        <td class="border border-slate-300 px-3 py-2">{{ item.date }}</td>
+        <td class="border border-slate-300 px-3 py-2">{{ item.openPrice }}</td>
       </tr>
     </tbody>
   </table>

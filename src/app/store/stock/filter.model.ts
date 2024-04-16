@@ -3,8 +3,9 @@ export interface FilterStateModel {
   apiResponse?: any;
 }
 
-export interface StockElement {
-  date: string;
-  openPrice: number;
-  symbol: string;
-}
+// export interface StockStateModel {
+//   date: string;
+//   openPrice: number;
+//   symbol: string;
+//   stockElements: StockElement[];
+// }
