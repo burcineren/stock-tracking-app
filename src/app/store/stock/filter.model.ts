@@ -1,11 +1,15 @@
-export interface FilterStateModel {
-  filters: string[];
-  apiResponse?: any;
-}
 
-// export interface StockStateModel {
-//   date: string;
-//   openPrice: number;
-//   symbol: string;
-//   stockElements: StockElement[];
-// }
+export interface StockStateModel {
+  stockElements: StockData[];
+  chartData: ChartData;
+}
+export interface StockData {
+  date: string;
+  openPrice: number;
+  symbol: string;
+}
+export interface ChartData {
+  chart: any;
+  categories: any[];
+  dataset: any[];
+}

@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-// import { UpdateChart } from 'src/app/store/stock/stock.actions';
 import { Store } from '@ngxs/store';
 import { FusionChartsModule } from "angular-fusioncharts";
 
@@ -7,6 +6,8 @@ import * as FusionCharts from "fusioncharts";
 
 import * as Charts from "fusioncharts/fusioncharts.charts";
 import * as FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
+import { FetchStockData, UpdateChart } from 'src/app/store/stock/filter.actions';
+import { StockState } from 'src/app/store/stock/filter.state';
 
 
 FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
@@ -24,8 +25,19 @@ export class StockChartComponent {
   @Input() chartDataSource: any;
 
   constructor(private store: Store) { }
+
   ngOnInit(): void {
+    this.store.dispatch(new FetchStockData(null, null, [])); 
   }
+
+  ngDoCheck(): void {
+    this.store.select(StockState.chartData).subscribe(chartData => {
+      if (chartData) {
+        this.chartDataSource = chartData;
+      }
+    });
+  }
+
   updateChart(selectedStocks: string[], data: any) {
     const categories = [];
     const dataset = [];
@@ -68,7 +80,7 @@ export class StockChartComponent {
         dataset: dataset
       };
 
-      // this.store.dispatch(new UpdateChart(this.chartDataSource));
+      this.store.dispatch(new UpdateChart(this.chartDataSource));
     }
   }
 }

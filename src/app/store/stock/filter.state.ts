@@ -1,24 +1,24 @@
 import { Injectable } from '@angular/core';
-import { Action, Selector, State, StateContext, createSelector } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { StockService } from 'src/app/core/services/stock.service';
-// import { FilterStateModel, StockStateModel } from './filter.model';
-import { FetchStockData, Filters } from './filter.actions';
+import { FetchStockData, UpdateChart } from './filter.actions';
 import { tap } from 'rxjs';
-
-export interface StockData {
-  date: string;
-  openPrice: number;
-  symbol: string;
-}
-export interface StockStateModel {
-  stockElements: StockData[];
-}
-
-
+import { ChartData, StockData, StockStateModel } from './filter.model';
 @State<StockStateModel>({
   name: 'stock',
   defaults: {
-    stockElements: []
+    stockElements: [],
+    chartData: {
+      chart: {
+        caption: "Mevcut Veri Yok",
+        subcaption: "",
+        theme: "fusion",
+        type: "line"
+      },
+      categories: [{ category: [] }],
+      dataset: []
+    }
+
   }
 })
 @Injectable()
@@ -28,10 +28,11 @@ export class StockState {
   static stockElements(state: StockStateModel) {
     return state.stockElements;
   }
-  static filteredStockElements(startDate: Date, endDate: Date, selectedStocks: string[]) {
-    return createSelector([StockState], (state: StockStateModel) => {
-    });
+  @Selector()
+  static chartData(state: StockStateModel) {
+    return state.chartData;
   }
+
   @Action(FetchStockData)
   fetchStockData(ctx: StateContext<StockStateModel>, { startDate, endDate, selectedStocks }: FetchStockData) {
     return this.stockService.getDailyTimeSeries(selectedStocks, startDate, endDate).pipe(
@@ -54,9 +55,59 @@ export class StockState {
           }
         }
         ctx.setState({
+          ...ctx.getState(),
           stockElements
         });
+        const categories = [];
+        const dataset = [];
+
+        if (Object.keys(data).length === 0) {
+          const chartData: ChartData = {
+            chart: {
+              caption: "No Data Available",
+              subcaption: "",
+              theme: "fusion",
+              type: "line"
+            },
+            categories: [{ category: [] }],
+            dataset: []
+          };
+          ctx.dispatch(new UpdateChart(chartData));
+        } else {
+          const symbols: string[] = Object.keys(data);
+          const symbolData = data[symbols[0]]['Time Series (Daily)'];
+          const dates = Object.keys(symbolData || {});
+          const categoryLabels = dates.map(date => ({ label: date }));
+          categories.push({ category: categoryLabels });
+          for (const symbol of symbols) {
+            const symbolData = data[symbol]['Time Series (Daily)'];
+            const seriesData = dates.map(date => ({ value: symbolData[date]['4. close'] || 0 }));
+            dataset.push({
+              seriesname: symbol,
+              data: seriesData
+            });
+          }
+          const chartData: ChartData = {
+            chart: {
+              caption: "Hisse Senedi Değerleri ve Tarihleri",
+              subcaption: "",
+              yaxisname: "",
+              theme: "fusion",
+              type: "line"
+            },
+            categories: categories,
+            dataset: dataset
+          };
+          ctx.dispatch(new UpdateChart(chartData));
+        }
       })
+     
     );
+  }
+  @Action(UpdateChart)
+  updateChart(ctx: StateContext<StockStateModel>, { chartData }: UpdateChart) {
+    ctx.patchState({
+      chartData: chartData
+    });
   }
 }
