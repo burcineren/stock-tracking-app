@@ -36,7 +36,6 @@
     "highlight.js": "~11.5.1",
     "luxon": "^2.5.2",
     "ngx-quicklink": "~0.2.7",
-    "ngx-quill": "^25.1.1",
     "ngx-showdown": "^6.0.0",
     "quill": "^2.0.0",
     "rxjs": "^7.4.0",
