@@ -39,48 +39,6 @@ export class StockChartComponent {
   }
 
   updateChart(selectedStocks: string[], data: any) {
-    const categories = [];
-    const dataset = [];
-
-    if (Object.keys(data).length === 0) {
-      this.chartDataSource = {
-        chart: {
-          caption: "No Data Available",
-          subcaption: "",
-          theme: "fusion",
-          type: "line"
-        },
-        categories: [{ category: [] }],
-        dataset: []
-      };
-    } else {
-      const symbols: string[] = Object.keys(data);
-      const symbolData = data[symbols[0]]['Time Series (Daily)'];
-      const dates = Object.keys(symbolData || {});
-      const categoryLabels = dates.map(date => ({ label: date }));
-      categories.push({ category: categoryLabels });
-      for (const symbol of symbols) {
-       
-        const symbolData = data[symbol]['Time Series (Daily)'];
-        const seriesData = dates.map(date => ({ value: symbolData[date]['4. close'] || 0 }));
-        dataset.push({
-          seriesname: symbol,
-          data: seriesData
-        });
-      }
-      this.chartDataSource = {
-        chart: {
-          caption: "Hisse Senedi Değerleri ve Tarihleri",
-          subcaption: "",
-          yaxisname: "",
-          theme: "fusion",
-          type: "line"
-        },
-        categories: categories,
-        dataset: dataset
-      };
-
       this.store.dispatch(new UpdateChart(this.chartDataSource));
-    }
   }
 }
