@@ -18,7 +18,7 @@ export class StockService {
   getDailyTimeSeries(symbols: string[], startDate: string, endDate: string): Observable<any> {
     const params = new HttpParams()
       .set('function', 'TIME_SERIES_DAILY')
-      .set('apikey', this.API_URL)
+      .set('apikey', this.API_KEY)
       .set('startDate', startDate)
       .set('endDate', endDate);
 
