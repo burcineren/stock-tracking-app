@@ -9,14 +9,35 @@ import { StockState } from 'src/app/store/stock/filter.state';
   templateUrl: './stock-table.component.html',
   styleUrls: ['./stock-table.component.scss']
 })
-export class StockTableComponent  {
+export class StockTableComponent {
   @Input() filteredDataSource: MatTableDataSource<StockData>;
-
-  constructor(private store: Store) {}
+  tableTitle: string = "Hisse Senedi Değerleri ve Tarihleri";
+  closeValues: number[] = [];
+  dates: string[] = [];
+  constructor(private store: Store) { }
 
   ngOnInit(): void {
     this.store.select(StockState.stockElements).subscribe(stockElements => {
       this.filteredDataSource = new MatTableDataSource(stockElements);
     });
+  }
+  getDate(index: number): string {
+    return this.dates[index];
+  }
+  getSymbol(): string {
+    return this.filteredDataSource.data[0]?.symbol;
+  }
+  getAllSymbols(): string[] {
+    const symbolSet = new Set<string>(); 
+
+    if (this.filteredDataSource.data) {
+      this.filteredDataSource.data.forEach(item => {
+        symbolSet.add(item.symbol);
+      });
+    }
+    return Array.from(symbolSet);
+  }
+  getPrice(): number {
+    return this.filteredDataSource.data[0].openPrice;
   }
 }
