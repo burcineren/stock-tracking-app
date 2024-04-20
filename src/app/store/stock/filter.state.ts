@@ -13,7 +13,7 @@ import { ChartData, StockData, StockStateModel } from './filter.model';
         caption: "Mevcut Veri Yok",
         subcaption: "",
         theme: "fusion",
-        type: "line"
+        type: "msline"
       },
       categories: [{ category: [] }],
       dataset: []
@@ -67,7 +67,7 @@ export class StockState {
               caption: "No Data Available",
               subcaption: "",
               theme: "fusion",
-              type: "line"
+              type: "msline"
             },
             categories: [{ category: [] }],
             dataset: []
@@ -81,9 +81,11 @@ export class StockState {
           categories.push({ category: categoryLabels });
           for (const symbol of symbols) {
             const symbolData = data[symbol]['Time Series (Daily)'];
+            const metaData = data[symbol]['Meta Data'];
+            const symbolName = metaData['2. Symbol'];
             const seriesData = dates.map(date => ({ value: symbolData[date]['4. close'] || 0 }));
             dataset.push({
-              seriesname: symbol,
+              seriesname: symbolName,
               data: seriesData
             });
           }
@@ -93,7 +95,7 @@ export class StockState {
               subcaption: "",
               yaxisname: "",
               theme: "fusion",
-              type: "line"
+              type: "msline"
             },
             categories: categories,
             dataset: dataset
@@ -101,7 +103,7 @@ export class StockState {
           ctx.dispatch(new UpdateChart(chartData));
         }
       })
-     
+
     );
   }
   @Action(UpdateChart)
