@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Select, Store } from '@ngxs/store';
+import { Observable, Subject } from 'rxjs';
 import { StockData } from 'src/app/store/stock/filter.model';
 import { StockState } from 'src/app/store/stock/filter.state';
 
@@ -14,18 +15,14 @@ export class StockTableComponent {
   tableTitle: string = "Hisse Senedi Değerleri ve Tarihleri";
   closeValues: number[] = [];
   dates: string[] = [];
+  @Select(StockState.chartData) animals$: Observable<string[]>;
+  protected subscriptions$: Subject<boolean> = new Subject();
   constructor(private store: Store) { }
 
   ngOnInit(): void {
     this.store.select(StockState.stockElements).subscribe(stockElements => {
       this.filteredDataSource = new MatTableDataSource(stockElements);
     });
-  }
-  getDate(index: number): string {
-    return this.dates[index];
-  }
-  getSymbol(): string {
-    return this.filteredDataSource.data[0]?.symbol;
   }
   getAllSymbols(): string[] {
     const symbolSet = new Set<string>(); 
@@ -39,5 +36,9 @@ export class StockTableComponent {
   }
   getPrice(): number {
     return this.filteredDataSource.data[0].openPrice;
+  }
+  ngOnDestroy(){
+    this.subscriptions$.next(true);
+    this.subscriptions$.complete();
   }
 }
