@@ -16,12 +16,10 @@ interface StockElement {
   styleUrls: ['./stock-tracking.component.scss'],
 })
 export class StockTrackingComponent implements OnInit {
-  @Select(state => state.zoo.animals) animals$: Observable<string[]>;
 
 
   @ViewChild(StockChartComponent) stockChartComponent: StockChartComponent;
 
-  newAnimal: string = '';
   filters: string[] = [];
   selectedStocks: string[] = [];
   stocks = ['IBM', 'AAPL', 'AMZN', 'GOOG', 'MSFT'];

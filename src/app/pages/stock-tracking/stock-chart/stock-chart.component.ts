@@ -25,7 +25,7 @@ export class StockChartComponent {
   @Input() dataFormat: string;
   @Input() chartDataSource: any;
 
-  @Select(StockState.chartData) animals$: Observable<string[]>;
+  @Select(StockState.chartData) chartData$: Observable<string[]>;
 
   protected subscriptions$: Subject<boolean> = new Subject();
 

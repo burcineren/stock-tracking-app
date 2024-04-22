@@ -15,7 +15,7 @@ export class StockTableComponent {
   tableTitle: string = "Hisse Senedi Değerleri ve Tarihleri";
   closeValues: number[] = [];
   dates: string[] = [];
-  @Select(StockState.chartData) animals$: Observable<string[]>;
+  @Select(StockState.stockElements) stockElements$: Observable<string[]>;
   protected subscriptions$: Subject<boolean> = new Subject();
   constructor(private store: Store) { }
 
