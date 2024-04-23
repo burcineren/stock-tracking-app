@@ -33,14 +33,12 @@ export class StockChartComponent {
 
   ngOnInit(): void {
     this.store.dispatch(new FetchStockData(null, null, []));
-  }
-
-  ngDoCheck(): void {
     this.store.select(StockState.chartData).subscribe(chartData => {
       if (chartData) {
         this.chartDataSource = chartData;
       }
     });
+    
   }
 
   updateChart(selectedStocks: string[], data: any) {
