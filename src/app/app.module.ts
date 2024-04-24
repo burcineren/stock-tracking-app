@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CustomLayoutModule } from './layout/custom-layout.module';
 import { StockState } from './store/stock/filter.state';
 import { NgxsModule } from '@ngxs/store';
+import { StockDataState } from './core/store/stock/stock.state';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,7 +18,7 @@ import { NgxsModule } from '@ngxs/store';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    NgxsModule.forRoot([StockState]),
+    NgxsModule.forRoot([StockState, StockDataState]),
     VexModule,
     CustomLayoutModule
   ],

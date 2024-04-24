@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, forkJoin, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 
@@ -13,7 +13,7 @@ export class StockService {
   private API_KEY = environment.apiKey;
 
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getDailyTimeSeries(symbols: string[], startDate: string, endDate: string): Observable<any> {
     const params = new HttpParams()
@@ -23,7 +23,8 @@ export class StockService {
       .set('endDate', endDate);
 
     const requests = symbols.map(symbol => {
-      return this.http.get<any>(`${this.API_URL}query`, { params: params.append('symbol', symbol) });
+      // return this.http.get<any>(`${this.API_URL}query`, { params: params.append('symbol', symbol) });
+      return of([])
     });
 
     return forkJoin(requests);

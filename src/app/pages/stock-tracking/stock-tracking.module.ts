@@ -30,6 +30,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { StockTableComponent } from './stock-table/stock-table.component';
 import { StockChartComponent } from './stock-chart/stock-chart.component';
+import { ChartComponent } from '../../stock/chart/chart.component';
+import { ListComponent } from 'src/app/stock/list/list.component';
 FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme);
 
 
@@ -37,7 +39,7 @@ FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme);
   declarations: [
     StockTrackingComponent,
     StockTableComponent,
-    StockChartComponent
+    StockChartComponent, ChartComponent, ListComponent
   ],
   imports: [
     CommonModule,
@@ -67,6 +69,6 @@ FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme);
     MatPaginatorModule,
     MatFormFieldModule
   ],
-  
+
 })
 export class StockTrackingModule { }

@@ -1,10 +1,11 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { StockService } from 'src/app/core/services/stock.service';
-import { Select, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { StockChartComponent } from './stock-chart/stock-chart.component';
-import { Observable } from 'rxjs';
 import { FetchStockData, Filters } from 'src/app/store/stock/filter.actions';
+import { StockDataAction } from 'src/app/core/store/stock/stock.action';
+import moment from 'moment';
 interface StockElement {
   date: string;
   openPrice: number;
@@ -56,17 +57,31 @@ export class StockTrackingComponent implements OnInit {
   }
 
   filterData() {
-    const startDate = this.formatDate(this.range.start);
-    const endDate = this.formatDate(this.range.end);
+    // const startDate = this.formatDate(this.range.start);
+    // const endDate = this.formatDate(this.range.end);
     const selectedStocks = this.selectedStocks;
-    if (startDate && endDate && selectedStocks.length > 0) {
-      this.store.dispatch(new FetchStockData(startDate, endDate, selectedStocks)).subscribe((data) => {
-        this.filteredDataSource.filter = '';
-        this.filteredDataSource.filter = this.filteredDataSource.filter.trim().toLowerCase();
-      })
-    } else {
+    // if (startDate && endDate && selectedStocks.length > 0) {
+    //   this.store.dispatch(new FetchStockData(startDate, endDate, selectedStocks)).subscribe((data) => {
+    //     this.filteredDataSource.filter = '';
+    //     this.filteredDataSource.filter = this.filteredDataSource.filter.trim().toLowerCase();
+    //   })
+    // } else {
+    //   console.log('Please select a date range and at least one stock');
+    // }
+
+    if (this.selectedStocks.length === 0 || !this.range.start || !this.range.end) {
+
       console.log('Please select a date range and at least one stock');
+
+      return;
     }
+
+    this.store.dispatch(new StockDataAction({
+      stocks: selectedStocks,
+      startDate: moment(this.range.start),
+      endDate: moment(this.range.end)
+    }));
+
   }
   formatDate(date: string | null): string | null {
     if (!date) {

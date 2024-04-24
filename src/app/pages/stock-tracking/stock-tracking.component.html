@@ -1,16 +1,10 @@
-<div class="container w-full h-full flex py-4 gap-4 flex-col">
-  <div class="container w-full h-full flex py-4 gap-4 flex-col">
-    <div
-      class="card w-full flex flex-wrap items-center justify-between px-4 p-2"
-    >
+<div class="w-full h-full flex py-4 gap-4 flex-col">
+  <div class="w-full h-full flex py-4 gap-4 flex-col">
+    <div class="card w-full flex flex-wrap items-center justify-between px-4 p-2">
       <div class="flex items-center flex-wrap gap-4">
         <mat-form-field class="w-52">
           <mat-label>Hisse Seçiniz</mat-label>
-          <mat-select
-            placeholder="Hisse Seçiniz"
-            multiple
-            [(ngModel)]="selectedStocks"
-          >
+          <mat-select required placeholder="Hisse Seçiniz" multiple [(ngModel)]="selectedStocks">
             <mat-option *ngFor="let stock of stocks" [value]="stock">
               {{ stock }}
             </mat-option>
@@ -19,38 +13,26 @@
         <mat-form-field>
           <mat-label>Tarih seçiniz</mat-label>
           <mat-date-range-input [rangePicker]="picker">
-            <input
-              matStartDate
-              placeholder="Start date"
-              [(ngModel)]="range.start"
-            />
-            <input matEndDate placeholder="End date" [(ngModel)]="range.end" />
+            <input required matStartDate placeholder="Start date" [(ngModel)]="range.start" />
+            <input matEndDate placeholder="End date" [(ngModel)]="range.end" required />
           </mat-date-range-input>
           <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-          <mat-datepicker-toggle
-            matSuffix
-            [for]="picker"
-          ></mat-datepicker-toggle>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-date-range-picker #picker></mat-date-range-picker>
         </mat-form-field>
       </div>
-      <button
-        mat-raised-button
-        color="primary"
-        class="float-right"
-        (click)="filterData()"
-      >
+      <button mat-raised-button color="primary" class="float-right" (click)="filterData()">
         Göster
       </button>
     </div>
   </div>
 
-  <vex-stock-chart
-    [width]="width"
-    [height]="height"
-    [type]="type"
-    [dataFormat]="dataFormat"
-    [chartDataSource]="chartDataSource"
-  ></vex-stock-chart>
-  <vex-stock-table [filteredDataSource]="filteredDataSource"></vex-stock-table>
+  <!-- <vex-stock-chart [width]="width" [height]="height" [type]="type" [dataFormat]="dataFormat"
+    [chartDataSource]="chartDataSource"></vex-stock-chart>
+  <vex-stock-table [filteredDataSource]="filteredDataSource"></vex-stock-table> -->
+
+  <vex-fusion-chart></vex-fusion-chart>
+
+  <vex-list></vex-list>
+
 </div>
