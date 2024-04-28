@@ -66,6 +66,7 @@ FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme);
     FusionChartsModule,
     MatTableModule,
     FormsModule,
+    ReactiveFormsModule,
     MatPaginatorModule,
     MatFormFieldModule
   ],

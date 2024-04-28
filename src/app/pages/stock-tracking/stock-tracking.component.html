@@ -1,10 +1,10 @@
 <div class="w-full h-full flex py-4 gap-4 flex-col">
   <div class="w-full h-full flex py-4 gap-4 flex-col">
     <div class="card w-full flex flex-wrap items-center justify-between px-4 p-2">
-      <div class="flex items-center flex-wrap gap-4">
+      <div class="flex items-center flex-wrap gap-4" [formGroup]="form">
         <mat-form-field class="w-52">
           <mat-label>Hisse Seçiniz</mat-label>
-          <mat-select required placeholder="Hisse Seçiniz" multiple [(ngModel)]="selectedStocks">
+          <mat-select placeholder="Hisse Seçiniz" multiple formControlName="stocks">
             <mat-option *ngFor="let stock of stocks" [value]="stock">
               {{ stock }}
             </mat-option>
@@ -12,9 +12,9 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>Tarih seçiniz</mat-label>
-          <mat-date-range-input [rangePicker]="picker">
-            <input required matStartDate placeholder="Start date" [(ngModel)]="range.start" />
-            <input matEndDate placeholder="End date" [(ngModel)]="range.end" required />
+          <mat-date-range-input [rangePicker]="picker" required>
+            <input matStartDate placeholder="Start date" formControlName="startDate" />
+            <input matEndDate placeholder="End date" formControlName="endDate" />
           </mat-date-range-input>
           <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>

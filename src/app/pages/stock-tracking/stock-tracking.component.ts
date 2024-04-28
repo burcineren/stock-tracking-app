@@ -6,6 +6,7 @@ import { StockChartComponent } from './stock-chart/stock-chart.component';
 import { FetchStockData, Filters } from 'src/app/store/stock/filter.actions';
 import { StockDataAction } from 'src/app/core/store/stock/stock.action';
 import moment from 'moment';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 interface StockElement {
   date: string;
   openPrice: number;
@@ -47,7 +48,21 @@ export class StockTrackingComponent implements OnInit {
   };
   filteredDataSource = new MatTableDataSource<StockElement>();
 
-  constructor(private stockService: StockService, private store: Store) { }
+  form: FormGroup;
+
+  constructor(
+    private stockService: StockService,
+    private store: Store,
+    private formBuilder: FormBuilder
+  ) {
+
+    this.form = this.formBuilder.group({
+      stocks: [null, Validators.required],
+      startDate: [null, Validators.required],
+      endDate: [null, Validators.required],
+    });
+
+  }
 
   ngOnInit(): void {
   }
@@ -57,9 +72,16 @@ export class StockTrackingComponent implements OnInit {
   }
 
   filterData() {
+
+    this.form.markAllAsTouched();
+
+    if (this.form.invalid) {
+      return;
+    }
+
     // const startDate = this.formatDate(this.range.start);
     // const endDate = this.formatDate(this.range.end);
-    const selectedStocks = this.selectedStocks;
+    // const selectedStocks = this.selectedStocks;
     // if (startDate && endDate && selectedStocks.length > 0) {
     //   this.store.dispatch(new FetchStockData(startDate, endDate, selectedStocks)).subscribe((data) => {
     //     this.filteredDataSource.filter = '';
@@ -69,17 +91,14 @@ export class StockTrackingComponent implements OnInit {
     //   console.log('Please select a date range and at least one stock');
     // }
 
-    if (this.selectedStocks.length === 0 || !this.range.start || !this.range.end) {
-
-      console.log('Please select a date range and at least one stock');
-
-      return;
-    }
+    const stocks = this.form.get('stocks').value;
+    const startDate = moment(this.form.get('startDate').value);
+    const endDate = moment(this.form.get('endDate').value);
 
     this.store.dispatch(new StockDataAction({
-      stocks: selectedStocks,
-      startDate: moment(this.range.start),
-      endDate: moment(this.range.end)
+      stocks,
+      startDate,
+      endDate
     }));
 
   }

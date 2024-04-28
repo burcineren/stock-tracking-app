@@ -4,7 +4,7 @@ import { StockService } from '../../stock/stock.service';
 import { Injectable } from '@angular/core';
 import moment from 'moment';
 import { StockData, StockDataRequestModel } from '../../stock/stock.model';
-import { forkJoin } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
 
 export interface StockStateModel {
     loading: boolean;
@@ -54,6 +54,16 @@ export class StockDataState {
 
         this.stockService.getStockData(payload).subscribe(response => {
 
+            if (response.filter(res => res['Meta Data'] && res['Meta Data']['2. Symbol']).length === 0) {
+
+                patchState({
+                    loading: false,
+                    chartData: [],
+                    tableData: [],
+                });
+                return;
+            }
+
             const formatterData: StockData[] = [
                 ...this.getServiceResponse(payload, response),
                 ...this.getCacheResponse(payload, response)
@@ -79,8 +89,8 @@ export class StockDataState {
     private getCacheResponse(payload: StockDataRequestModel, response: any[]) {
         return this.stockService.cacheRequestSubject.value
             .filter(cache => payload.stocks.includes(cache['Meta Data']['2. Symbol'])
-                && !response.map(res => res['Meta Data']['2. Symbol']).includes(cache['Meta Data']['2. Symbol']))
-            .map(res => {
+                // && !response.map(res => res['Meta Data']['2. Symbol']).includes(cache['Meta Data']['2. Symbol'])
+            ).map(res => {
                 return {
                     symbol: res['Meta Data']['2. Symbol'],
                     data: this.getData(res['Time Series (Daily)'], { startDate: payload.startDate, endDate: payload.endDate })
