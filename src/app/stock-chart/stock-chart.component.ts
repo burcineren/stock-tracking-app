@@ -7,7 +7,7 @@ import * as FusionCharts from "fusioncharts";
 import * as Charts from "fusioncharts/fusioncharts.charts";
 import * as FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
 import { Observable, Subject } from 'rxjs';
-import { FetchStockData, UpdateChart } from 'src/app/store/stock/filter.actions';
+// import { FetchStockData, UpdateChart } from 'src/app/store/stock/filter.actions';
 import { StockState } from 'src/app/store/stock/filter.state';
 
 
@@ -37,27 +37,12 @@ export class StockChartComponent {
     dataset: []
   }
 
-  // @Select(StockState.chartData) chartData$: Observable<string[]>;
 
-  protected subscriptions$: Subject<boolean> = new Subject();
 
   constructor(private store: Store) { }
 
   ngOnInit(): void {
-    this.store.dispatch(new FetchStockData(null, null, []));
-    // this.store.select(StockState.chartData).subscribe(chartData => {
-    //   if (chartData) {
-    //     this.chartDataSource = chartData;
-    //   }
-    // });
-    
-  }
 
-  updateChart(selectedStocks: string[], data: any) {
-    this.store.dispatch(new UpdateChart(this.chartDataSource));
-  }
-  ngOnDestroy() {
-    this.subscriptions$.next(true);
-    this.subscriptions$.complete();
-  }
+ 
+}
 }

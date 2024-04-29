@@ -16,7 +16,7 @@ const routes: VexRoutes = [
       },
       {
         path: '',
-        loadChildren: () => import('./pages/stock-tracking/stock-tracking.module').then(m => m.StockTrackingModule),
+        loadChildren: () => import('./stock-tracking/stock-tracking.module').then(m => m.StockTrackingModule),
       },
     ]
   }

@@ -28,8 +28,8 @@ import * as charts from "fusioncharts/fusioncharts.charts";
 import * as FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { StockTableComponent } from './stock-table/stock-table.component';
-import { StockChartComponent } from './stock-chart/stock-chart.component';
+import { StockTableComponent } from '../stock-table/stock-table.component';
+import { StockChartComponent } from '../stock-chart/stock-chart.component';
 FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme);
 
 
