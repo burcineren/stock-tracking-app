@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
-import { StockData } from 'src/app/store/stock/filter.model';
-import { StockState } from 'src/app/store/stock/filter.state';
+import { StockData } from 'src/app/core/store/stock/filter.model';
+import { StockState } from 'src/app/core/store/stock/filter.state';
 
 @Component({
   selector: 'vex-stock-table',

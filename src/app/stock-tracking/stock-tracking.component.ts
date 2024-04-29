@@ -4,7 +4,7 @@ import { StockService } from 'src/app/core/stock/stock.service';
 import { Select, Store } from '@ngxs/store';
 import { StockChartComponent } from '../stock-chart/stock-chart.component';
 import { Observable } from 'rxjs';
-import { StockDataAction, Filters } from 'src/app/store/stock/filter.actions';
+import { StockDataAction, Filters } from 'src/app/core/store/stock/filter.actions';
 import moment from 'moment';
 interface StockElement {
   date: string;

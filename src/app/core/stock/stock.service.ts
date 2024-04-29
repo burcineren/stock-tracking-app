@@ -16,7 +16,7 @@ export class StockService {
    
 
     const requests = req.stocks.map(stock => {
-      return this.http.get<any>(`${environment.apiUrl}/query?function=TIME_SERIES_DAILY&apikey=${environment.apiKey}&symbol=${stock}`);
+      return this.http.get<any>(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&apikey=AC248LFOPBKSO5YD&symbol=${stock}`);
     });
 
     return forkJoin(requests);

@@ -8,7 +8,7 @@ import * as Charts from "fusioncharts/fusioncharts.charts";
 import * as FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
 import { Observable, Subject } from 'rxjs';
 // import { FetchStockData, UpdateChart } from 'src/app/store/stock/filter.actions';
-import { StockState } from 'src/app/store/stock/filter.state';
+import { StockState } from 'src/app/core/store/stock/filter.state';
 
 
 FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
