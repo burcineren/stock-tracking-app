@@ -7,8 +7,3 @@ export interface StockData {
   openPrice: number;
   symbol: string;
 }
-export interface ChartData {
-  chart: any;
-  categories: any[];
-  dataset: any[];
-}

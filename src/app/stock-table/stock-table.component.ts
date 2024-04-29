@@ -15,14 +15,11 @@ export class StockTableComponent {
   tableTitle: string = "Hisse Senedi Değerleri ve Tarihleri";
   closeValues: number[] = [];
   dates: string[] = [];
-  @Select(StockState.stockElements) stockElements$: Observable<string[]>;
-  protected subscriptions$: Subject<boolean> = new Subject();
+
   constructor(private store: Store) { }
 
   ngOnInit(): void {
-    this.store.select(StockState.stockElements).subscribe(stockElements => {
-      this.filteredDataSource = new MatTableDataSource(stockElements);
-    });
+  
   }
   getAllSymbols(): string[] {
     const symbolSet = new Set<string>(); 
@@ -36,9 +33,5 @@ export class StockTableComponent {
   }
   getPrice(): number {
     return this.filteredDataSource.data[0].openPrice;
-  }
-  ngOnDestroy(){
-    this.subscriptions$.next(true);
-    this.subscriptions$.complete();
   }
 }

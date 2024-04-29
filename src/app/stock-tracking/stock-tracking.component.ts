@@ -3,8 +3,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { StockService } from 'src/app/core/stock/stock.service';
 import { Select, Store } from '@ngxs/store';
 import { StockChartComponent } from '../stock-chart/stock-chart.component';
-import { Observable } from 'rxjs';
-import { StockDataAction, Filters } from 'src/app/core/store/stock/filter.actions';
 import moment from 'moment';
 interface StockElement {
   date: string;
@@ -33,13 +31,8 @@ export class StockTrackingComponent implements OnInit {
 
   constructor(private stockService: StockService, private store: Store) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
   }
-  filter(filters: string[]) {
-    this.store.dispatch(new Filters(filters))
-    console.log(this.store.dispatch(new Filters(filters)))
-  }
-
   filterData() {
     const startDate = moment(this.range.start);
     const endDate = moment(this.range.end);
@@ -53,4 +46,5 @@ export class StockTrackingComponent implements OnInit {
     //   console.log('Please select a date range and at least one stock');
     // }
   }
+  
 }
