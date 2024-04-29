@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: "https://www.alphavantage.co/",
+  apiUrl: "https://www.alphavantage.co",
   apiKey: "AC248LFOPBKSO5YD",
 };
 

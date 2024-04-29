@@ -1,7 +1,6 @@
 
 export interface StockStateModel {
   stockElements: StockData[];
-  chartData: ChartData;
 }
 export interface StockData {
   date: string;

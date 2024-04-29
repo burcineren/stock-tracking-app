@@ -19,13 +19,25 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
 })
 
 export class StockChartComponent {
-  @Input() width: string;
-  @Input() height: string;
-  @Input() type: string;
-  @Input() dataFormat: string;
+  width = '100%';
+  height = '400';
+  type = 'msline';
+  dataFormat = 'json';
+
   @Input() chartDataSource: any;
 
-  @Select(StockState.chartData) chartData$: Observable<string[]>;
+  chartData: {
+    chart: {
+      caption: "Mevcut Veri Yok",
+      subcaption: "",
+      theme: "fusion",
+      type: "msline"
+    },
+    categories: [{ category: [] }],
+    dataset: []
+  }
+
+  // @Select(StockState.chartData) chartData$: Observable<string[]>;
 
   protected subscriptions$: Subject<boolean> = new Subject();
 
@@ -33,11 +45,11 @@ export class StockChartComponent {
 
   ngOnInit(): void {
     this.store.dispatch(new FetchStockData(null, null, []));
-    this.store.select(StockState.chartData).subscribe(chartData => {
-      if (chartData) {
-        this.chartDataSource = chartData;
-      }
-    });
+    // this.store.select(StockState.chartData).subscribe(chartData => {
+    //   if (chartData) {
+    //     this.chartDataSource = chartData;
+    //   }
+    // });
     
   }
 

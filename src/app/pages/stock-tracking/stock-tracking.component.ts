@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { StockService } from 'src/app/core/services/stock.service';
+import { StockService } from 'src/app/core/stock/stock.service';
 import { Select, Store } from '@ngxs/store';
 import { StockChartComponent } from './stock-chart/stock-chart.component';
 import { Observable } from 'rxjs';

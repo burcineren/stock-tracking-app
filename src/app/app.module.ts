@@ -19,7 +19,7 @@ import { NgxsModule } from '@ngxs/store';
     HttpClientModule,
     NgxsModule.forRoot([StockState]),
     VexModule,
-    CustomLayoutModule
+    CustomLayoutModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { StockService } from 'src/app/core/services/stock.service';
+import { StockService } from 'src/app/core/stock/stock.service';
 import { FetchStockData, UpdateChart } from './filter.actions';
 import { tap } from 'rxjs';
 import { ChartData, StockData, StockStateModel } from './filter.model';
@@ -8,16 +8,6 @@ import { ChartData, StockData, StockStateModel } from './filter.model';
   name: 'stock',
   defaults: {
     stockElements: [],
-    chartData: {
-      chart: {
-        caption: "Mevcut Veri Yok",
-        subcaption: "",
-        theme: "fusion",
-        type: "msline"
-      },
-      categories: [{ category: [] }],
-      dataset: []
-    }
 
   }
 })
@@ -28,14 +18,11 @@ export class StockState {
   static stockElements(state: StockStateModel) {
     return state.stockElements;
   }
-  @Selector()
-  static chartData(state: StockStateModel) {
-    return state.chartData;
-  }
+  
 
   @Action(FetchStockData)
   fetchStockData(ctx: StateContext<StockStateModel>, { startDate, endDate, selectedStocks }: FetchStockData) {
-    return this.stockService.getDailyTimeSeries(selectedStocks, startDate, endDate).pipe(
+     this.stockService.getStockDataRequest(payload).pipe(
       tap(data => {
         const stockElements: StockData[] = [];
         const symbols: string[] = Object.keys(data);
@@ -106,10 +93,10 @@ export class StockState {
 
     );
   }
-  @Action(UpdateChart)
-  updateChart(ctx: StateContext<StockStateModel>, { chartData }: UpdateChart) {
-    ctx.patchState({
-      chartData: chartData
-    });
-  }
+  // @Action(UpdateChart)
+  // updateChart(ctx: StateContext<StockStateModel>, { chartData }: UpdateChart) {
+  //   ctx.patchState({
+  //     chartData: chartData
+  //   });
+  // }
 }

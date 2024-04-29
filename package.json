@@ -35,6 +35,7 @@
     "fusioncharts": "^3.21.1",
     "highlight.js": "~11.5.1",
     "luxon": "^2.5.2",
+    "moment": "^2.30.1",
     "ngx-quicklink": "~0.2.7",
     "ngx-showdown": "^6.0.0",
     "quill": "^2.0.0",
