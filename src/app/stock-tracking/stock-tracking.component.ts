@@ -42,11 +42,12 @@ export class StockTrackingComponent implements OnInit {
     // } else {
     //   console.log('Please select a date range and at least one stock');
     // }
-    const store = this.store.dispatch(new StockDataAction({
+    this.store.dispatch(new StockDataAction({
       stocks: selectedStocks,
       startDate: moment(this.range.start),
       endDate: moment(this.range.end)
     }));
+    
   }
  
 }
