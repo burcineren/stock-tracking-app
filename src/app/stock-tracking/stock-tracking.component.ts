@@ -1,13 +1,11 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { StockService } from 'src/app/core/stock/stock.service';
-import { Select, Store } from '@ngxs/store';
-import { StockChartComponent } from '../stock-chart/stock-chart.component';
+import {  Store } from '@ngxs/store';
 import moment from 'moment';
+import { StockDataAction } from '../core/store/stock/stock.actions';
 interface StockElement {
   date: string;
   openPrice: number;
-  symbol: string;
 }
 @Component({
   selector: 'vex-stock-tracking',
@@ -17,26 +15,25 @@ interface StockElement {
 export class StockTrackingComponent implements OnInit {
 
 
-  @ViewChild(StockChartComponent) stockChartComponent: StockChartComponent;
-
-  filters: string[] = [];
-  selectedStocks: string[] = [];
   stocks = ['IBM', 'AAPL', 'AMZN', 'GOOG', 'MSFT'];
+
+  
+  selectedStocks: string[] = [];
 
   range = {
     start: null,
     end: null
   };
-  filteredDataSource = new MatTableDataSource<StockElement>();
+
 
   constructor(private stockService: StockService, private store: Store) { }
 
   ngOnInit() {
   }
+  
   filterData() {
-    const startDate = moment(this.range.start);
-    const endDate = moment(this.range.end);
     const selectedStocks = this.selectedStocks;
+
     // if (startDate && endDate && selectedStocks.length > 0) {
     //   this.store.dispatch(new StockDataAction(startDate)).subscribe((data) => {
     //     this.filteredDataSource.filter = '';
@@ -45,6 +42,11 @@ export class StockTrackingComponent implements OnInit {
     // } else {
     //   console.log('Please select a date range and at least one stock');
     // }
+    const store = this.store.dispatch(new StockDataAction({
+      stocks: selectedStocks,
+      startDate: moment(this.range.start),
+      endDate: moment(this.range.end)
+    }));
   }
-  
+ 
 }

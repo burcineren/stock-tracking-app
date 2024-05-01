@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { StockService } from 'src/app/core/stock/stock.service';
-import {  StockDataAction } from './filter.actions';
+import {  StockDataAction } from './stock.actions';
 import { StockData, StockDataModel } from 'src/app/core/stock/stock.model';
 
 export interface StockStateModel {
@@ -33,12 +33,15 @@ export class StockState {
   fetchStockData({patchState}: StateContext<StockStateModel>, {payload}:StockDataAction) {
      this.stockService.getStockDataRequest(payload).subscribe(data => {
      
-     patchState({
+    const test= patchState({
         tableData: [],
         chartData: []
       })
+      console.log("test:::",test);
       return;
+
      });
+
  
   }
 }
