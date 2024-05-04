@@ -1,5 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { StockState } from '../core/store/stock/stock.state';
+import { StockData } from '../core/stock/stock.model';
 
 
 @Component({
@@ -16,17 +19,79 @@ export class StockChartComponent {
 
   @Input() chartDataSource: any;
 
-  chartData: {
+  chartData = {
     chart: {
       caption: "Mevcut Veri Yok",
       subcaption: "",
       theme: "fusion",
-      type: "msline"
+      showHoverEffect: "1",
+      drawCrossLine: "1"
     },
     categories: [{ category: [] }],
     dataset: []
   }
-  constructor(private store: Store) { }
+
+  @Select(StockState.gatChartData) gatChartData: Observable<StockData[]>;
+  
+  constructor() {
+      this.gatChartData.subscribe(data => {
+        if(!data || data?.length === 0){
+          this.setDefaultChart();
+        }else{
+          this.setChartData(data);
+        }
+      });
+   }
   ngOnInit(): void {
   }
+  setDefaultChart() {
+    this.chartData = {
+      chart: {
+        caption: "Mevcut Veri Yok",
+        subcaption: "",
+        theme: "fusion",
+        showHoverEffect: "1",
+        drawCrossLine: "1"
+      },
+      categories: [{ category: [] }],
+      dataset: []
+    }
+  }
+  setChartData(data: StockData[]){
+    this.chartData = {
+      ...this.chartData,
+      chart: {
+        ...this.chartData.chart,
+        caption: "Hisse Senedi Değer ve Tarihleri",
+
+      },
+      categories: this.getCategories(data),
+      dataset: this.getDataSet(data)
+    }
+    
+    console.log(this.chartData);
+  }
+  getCategories(data:StockData[]){
+    return data.map(e => {
+      return {
+        category: e.data.map(d => {
+          return {
+            label: d.key
+          };
+        })
+      }});
+  }
+  getDataSet(data:StockData[]){
+    return data.map((e)=>{
+      return {
+        symbol: e.symbol,
+        category: e.data.map((d)=>{
+          return { value: d.value}
+        })
+      }
+
+    })
+  }
+  // categorileri maple
+  // dataseti maple
 }
