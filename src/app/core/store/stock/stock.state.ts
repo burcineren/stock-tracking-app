@@ -25,7 +25,7 @@ export class StockState {
     }
 
     @Selector()
-    static gatChartData({ chartData }: StockStateModel) {
+    static getChartData({ chartData }: StockStateModel) {
         return chartData;
     }
 
