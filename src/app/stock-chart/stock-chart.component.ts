@@ -1,5 +1,5 @@
-import { Component, Input } from "@angular/core";
-import { Select, Store } from "@ngxs/store";
+import { Component } from "@angular/core";
+import { Select } from "@ngxs/store";
 import { Observable } from "rxjs";
 import { StockState } from "../core/store/stock/stock.state";
 import { StockData } from "../core/stock/stock.model";

@@ -1,52 +1,19 @@
-<div class="container">
-  <div class="card">
-    <h1 class="text-center text-lg p-4">{{ tableTitle }}</h1>
-    <div
-      class=""
-      style="
-        overflow-x: auto;
-        overflow-y: auto;
-        max-height: 300px;
-        max-width: 1180px;
-      "
-    >
-      <table
-        data-testid="dataTable"
-        class="table-fixed border-collapse border border-slate-400 w-full text-sm text-left text-gray-500"
-      >
-        <!-- <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-          <tr>
-            <th scope="col" class="border border-slate-300 px-3 py-2 w-20"></th>
-            <th
-              *ngFor="let item of filteredDataSource.data"
-              scope="col"
-              class="border border-slate-300 px-3 py-2 w-32"
-            >
-              {{ item.date }}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            class="bg-white border border-slate-300"
-            *ngFor="let symbol of getAllSymbols()"
-          >
-            <th
-              scope="row"
-              class="border border-slate-300 px-3 py-2 font-medium text-gray-900 whitespace-nowrap"
-            >
-              {{ symbol }}
-            </th>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <h1 class="text-center text-lg p-4">{{ tableTitle }}</h1>
+  <ng-container *ngFor="let column of displayedColumns">
+    <!-- Stock Column -->
+    <ng-container *ngIf="column.type === 'Stock'" [matColumnDef]="column.label">
+      <th mat-header-cell *matHeaderCellDef>{{ column.label }}</th>
+      <td mat-cell *matCellDef="let element">{{ element.stock }}</td>
+    </ng-container>
 
-            <td
-              *ngFor="let item of filteredDataSource.data"
-              class="border border-slate-300 px-3 py-2"
-            >
-              {{ item.openPrice }}
-            </td>
-          </tr>
-        </tbody> -->
-      </table>
-    </div>
-  </div>
-</div>
+    <!-- Date Column -->
+    <ng-container *ngIf="column.type === 'date'" [matColumnDef]="column.label">
+      <th mat-header-cell *matHeaderCellDef>{{ column.label }}</th>
+      <td mat-cell *matCellDef="let element">{{ element[column.label] }}</td>
+    </ng-container>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
